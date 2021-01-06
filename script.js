@@ -7,8 +7,10 @@ const apiURL = 'https://api.lyrics.ovh';
 
 // Search by song or artist
 
-function searchSongs(term) {
-    fetch(`${apiURL}/suggest/${term}`).then(res => res.json()).then(data => console.log(data))
+async function searchSongs(term) {
+    const res = await fetch(`${apiURL}/suggest/${term}`);
+    const data = res.json();
+    showData(data);
 }
 
 // Event Listener
@@ -22,5 +24,4 @@ form.addEventListener('submit', e => {
     } else {
         searchSongs(searchTerm)
     }
-
 })
