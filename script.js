@@ -15,31 +15,30 @@ async function searchSongs(term) {
 
 // Show song and artist in DOM
 function showData(data) {
-    console.log(data)
     result.innerHTML = `
-    <ul class="songs">
-      ${data.data
+      <ul class="songs">
+        ${data.data
             .map(
                 song => `<li>
-      <span><strong>${song.artist.name}</strong> - ${song.title}</span>
-      <button class="btn" data-artist="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</button>
-    </li>`
+        <span><strong>${song.artist.name}</strong> - ${song.title}</span>
+        <button class="btn" data-artist="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</button>
+      </li>`
             )
             .join('')}
-    </ul>
-  `;
+      </ul>
+    `;
 
     if (data.prev || data.next) {
         more.innerHTML = `
-      ${data.prev
+        ${data.prev
                 ? `<button class="btn" onclick="getMoreSongs('${data.prev}')">Prev</button>`
                 : ''
             }
-      ${data.next
+        ${data.next
                 ? `<button class="btn" onclick="getMoreSongs('${data.next}')">Next</button>`
                 : ''
             }
-    `;
+      `;
     } else {
         more.innerHTML = '';
     }
@@ -48,9 +47,9 @@ function showData(data) {
 // Get prev and next songs
 async function getMoreSongs(url) {
     const res = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
-    const data = await res.json()
+    const data = await res.json();
 
-    showData(data)
+    showData(data);
 }
 
 // Event Listener
@@ -63,5 +62,17 @@ form.addEventListener('submit', e => {
         alert('Please type in a search term')
     } else {
         searchSongs(searchTerm)
+    }
+})
+
+// Get lyrics button click
+result.addEventListener('click', e => {
+    const clickedEl = e.target;
+
+    if (clickedEl.tagName === 'BUTTON') {
+        const artist = clickEl.getAtrribute('data-artist')
+        const songTitle = clickEl.getAtrribute('data-songtitle')
+
+        getLyrics(artist, songTitle)
     }
 })
